@@ -1,7 +1,6 @@
 package datos;
 
 import java.sql.Connection;
-import java.sql.Driver;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,16 +13,21 @@ public class Conexion {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String JDBC_USER = "root";
     private static final String JDBC_PASSWORD = "123456";
+
+    private static BasicDataSource dataSource;
     
     public static DataSource getDataSource() {
-        BasicDataSource ds = new BasicDataSource();
+        if (dataSource == null) {
+            dataSource = new BasicDataSource();
         
-        ds.setUrl(JDBC_URL);
-        ds.setUsername(JDBC_USER);
-        ds.setPassword(JDBC_PASSWORD);
-        ds.setDriverClassName(JDBC_DRIVER);
-        ds.setInitialSize(50);
-        return ds;
+            dataSource.setUrl(JDBC_URL);
+            dataSource.setUsername(JDBC_USER);
+            dataSource.setPassword(JDBC_PASSWORD);
+            dataSource.setDriverClassName(JDBC_DRIVER);
+            dataSource.setInitialSize(50);
+        }
+
+        return dataSource;
     }
     
     public static Connection getConnection() throws SQLException {
